@@ -192,7 +192,7 @@ export default function FavoritesPage() {
                   <div className="space-y-6">
                     {/* Quote Content */}
                     <blockquote className="font-serif text-xl md:text-2xl leading-relaxed text-slate-900 font-semibold">
-                      "{quote.content}"
+                      &ldquo;{quote.content}&rdquo;
                     </blockquote>
 
                     {/* Author */}

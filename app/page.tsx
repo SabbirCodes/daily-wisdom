@@ -179,7 +179,7 @@ export default function QuotesPage() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
                   >
-                    "{quote.content}"
+                    &ldquo;{quote.content}&rdquo;
                   </motion.blockquote>
 
                   <motion.cite
