@@ -122,6 +122,8 @@ export default function QuotesPage() {
     fetchRandomQuote();
   }, []);
 
+
+
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-3 sm:p-4">
       <div className="w-full max-w-5xl mx-auto">
@@ -160,42 +162,83 @@ export default function QuotesPage() {
           </p>
         </motion.div>
 
-        {/* Quote Card */}
+        {/* Quote Card - Optimized for smooth animations */}
         <AnimatePresence mode="wait">
           {quote && (
             <motion.div
               key={quote.id}
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: -20 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ 
+                opacity: 1, 
+                y: 0, 
+                scale: 1,
+                transition: {
+                  duration: 0.3,
+                  ease: "easeOut"
+                }
+              }}
+              exit={{ 
+                opacity: 0, 
+                y: -20, 
+                scale: 0.98,
+                transition: {
+                  duration: 0.4,
+                  ease: "easeInOut"
+                }
+              }}
+              style={{ 
+                willChange: 'transform, opacity',
+                backfaceVisibility: 'hidden',
+                perspective: 1000
+              }}
             >
-              <div className="p-4 sm:p-8 md:p-12 bg-white/80 backdrop-blur-sm border border-slate-200/50 rounded-2xl shadow-xl">
+              <div className="p-4 sm:p-8 md:p-12 bg-white border border-slate-200/50 rounded-2xl shadow-xl">
                 <div className="text-center space-y-4">
                   {/* Quote Content */}
                   <motion.blockquote
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ 
+                      opacity: 1, 
+                      y: 0,
+                      transition: {
+                        duration: 0.3,
+                        ease: "easeOut",
+                        delay: 0.1
+                      }
+                    }}
                     className="font-serif text-2xl md:text-3xl lg:text-4xl leading-relaxed text-slate-900 font-bold"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2, duration: 0.6 }}
                   >
                     &ldquo;{quote.content}&rdquo;
                   </motion.blockquote>
 
                   <motion.cite
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ 
+                      opacity: 1, 
+                      y: 0,
+                      transition: {
+                        duration: 0.3,
+                        ease: "easeOut",
+                        delay: 0.2
+                      }
+                    }}
                     className="block font-sans text-base sm:text-lg md:text-xl text-slate-600 not-italic"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4, duration: 0.6 }}
                   >
                     — {quote.author}
                   </motion.cite>
 
                   <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ 
+                      opacity: 1, 
+                      y: 0,
+                      transition: {
+                        duration: 0.3,
+                        ease: "easeOut",
+                        delay: 0.3
+                      }
+                    }}
                     className="flex items-center justify-center gap-3 sm:gap-4 pt-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6, duration: 0.6 }}
                   >
                     <button
                       onClick={toggleFavorite}
@@ -237,7 +280,7 @@ export default function QuotesPage() {
           className="text-center mt-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
         >
           <button
             onClick={fetchRandomQuote}
@@ -267,7 +310,7 @@ export default function QuotesPage() {
           className="text-center mt-16 text-slate-500"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.6 }}
+          transition={{ delay: 0.7, duration: 0.4 }}
         >
           <p className="text-xs text-slate-400">
             Wisdom flows where hearts are open

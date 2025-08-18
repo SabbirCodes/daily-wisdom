@@ -20,7 +20,7 @@ export default function FavoritesPage() {
   const [favoriteQuotes, setFavoriteQuotes] = useState<Quote[]>([]);
   const [favorites, setFavorites] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
-  const [copied, setCopied] = useState(false);
+  const [copiedQuotes, setCopiedQuotes] = useState<Set<number>>(new Set()); // Track copied state per quote
 
   useEffect(() => {
     const loadFavorites = async () => {
@@ -81,18 +81,24 @@ export default function FavoritesPage() {
         });
       } catch (error) {
         console.log("Error sharing:", error);
-        await copyToClipboard(text);
+        await copyToClipboard(text, quote.id);
       }
     } else {
-      await copyToClipboard(text);
+      await copyToClipboard(text, quote.id);
     }
   };
 
-  const copyToClipboard = async (text: string) => {
+  const copyToClipboard = async (text: string, quoteId: number) => {
     try {
       await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
+      setCopiedQuotes(prev => new Set(prev).add(quoteId));
+      setTimeout(() => {
+        setCopiedQuotes(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(quoteId);
+          return newSet;
+        });
+      }, 2500);
     } catch (error) {
       console.error("Failed to copy to clipboard:", error);
 
@@ -107,15 +113,21 @@ export default function FavoritesPage() {
       document.execCommand("copy");
       document.body.removeChild(textarea);
 
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
+      setCopiedQuotes(prev => new Set(prev).add(quoteId));
+      setTimeout(() => {
+        setCopiedQuotes(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(quoteId);
+          return newSet;
+        });
+      }, 2500);
     }
   };
 
   // Copies the quote to clipboard
   const copyQuote = async (quote: Quote) => {
     const text = `"${quote.content}" - ${quote.author}`;
-    await copyToClipboard(text);
+    await copyToClipboard(text, quote.id);
   };
 
   return (
@@ -215,7 +227,7 @@ export default function FavoritesPage() {
                           className="flex items-center text-sm gap-2 px-4 py-2 border border-slate-300 rounded-lg bg-transparent hover:bg-slate-50 text-slate-700 font-medium transition-colors"
                         >
                           <Copy className="h-4 w-4 sm:w-5 sm:h-5" />
-                          {copied ? "Copied!" : "Copy"}
+                          {copiedQuotes.has(quote.id) ? "Copied!" : "Copy"}
                         </button>
                       </div>
 
